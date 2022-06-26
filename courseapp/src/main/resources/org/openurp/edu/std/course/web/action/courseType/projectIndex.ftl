@@ -1,6 +1,6 @@
 [#ftl]
 [@b.head /]
-<div class="container">
+<div class="container-fluid">
   [#include "../alternative/nav.ftl"/]
   [@b.toolbar title="个人成绩课程类别变更申请"]
     bar.addItem("申请","apply()","action-new");

@@ -1,6 +1,6 @@
 [#ftl/]
 [@b.head/]
-<div class="container">
+<div class="container-fluid">
   [@b.toolbar title="计划完成情况"]
     bar.addPrint();
   [/@]

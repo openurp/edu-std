@@ -1,6 +1,6 @@
 [#ftl]
 [@b.head/]
-<div class="container">
+<div class="container-fluid">
 <script language="JavaScript" type="text/JavaScript" src="${base}/static/edu/TaskActivity.js?v=20210313"></script>
 [@b.toolbar title="我的课表"/]
 [@urp_base.semester_bar value=semester! formName='courseTableForm']

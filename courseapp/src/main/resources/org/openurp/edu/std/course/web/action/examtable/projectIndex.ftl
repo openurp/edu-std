@@ -1,6 +1,6 @@
 [#ftl]
 [@b.head/]
-<div class="container">
+<div class="container-fluid">
 [@b.toolbar title="期末考试安排"/]
 [@urp_base.semester_bar value=semester!/]
 [@b.messages slash='3'/]
