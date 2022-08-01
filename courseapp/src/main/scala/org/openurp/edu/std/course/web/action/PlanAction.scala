@@ -17,7 +17,9 @@
 
 package org.openurp.edu.std.course.web.action
 
-import org.beangle.commons.text.seq.{HanZiSeqStyle, SeqPattern}
+import org.beangle.commons.collection.Collections
+import org.beangle.commons.lang.Strings
+import org.beangle.commons.text.seq.{HanZiSeqStyle, RomanSeqStyle, SeqPattern}
 import org.beangle.data.dao.{EntityDao, OqlBuilder}
 import org.beangle.ems.app.Ems
 import org.beangle.web.action.context.ActionContext
@@ -61,26 +63,35 @@ class PlanAction extends StdProjectSupport {
       }
     }
     put("ems", Ems)
-    put("enableLinkCourseInfo",Features.EnableLinkCourseInfo)
+    put("enableLinkCourseInfo", Features.EnableLinkCourseInfo)
     forward("projectIndex")
   }
 
   def programDoc(): View = {
-    val std = getCurrentStudent()
-    coursePlanProvider.getExecutionPlan(std) foreach { executionPlan =>
-      val p = executionPlan.program
-      if p.status == AuditStatus.Passed then
-        val request_locale = ActionContext.current.locale
-        val builder = OqlBuilder.from(classOf[ProgramDoc], "pd")
-        builder.where("pd.program =:program", p)
-        builder.where("pd.docLocale=:locale", request_locale)
-        val seqPattern =
-          if (request_locale == new java.util.Locale("zh", "CN")) new SeqPattern(new HanZiSeqStyle, "{1}")
-          else new SeqPattern(new HanZiSeqStyle, "{1}") //FIXME USing RomanSeqStylt in commons 5.2.17
-        put("seqPattern", seqPattern)
-        val docs = entityDao.search(builder)
-        put("doc", docs.headOption)
-    }
+    val program = entityDao.get(classOf[Program], getLong("program.id").getOrElse(0L))
+    if program.status == AuditStatus.Passed then
+      val request_locale = ActionContext.current.locale
+      val builder = OqlBuilder.from(classOf[ProgramDoc], "pd")
+      builder.where("pd.program =:program", program)
+      builder.where("pd.docLocale=:locale", request_locale)
+      val seqPattern =
+        if (request_locale == new java.util.Locale("zh", "CN")) new SeqPattern(new HanZiSeqStyle, "{1}")
+        else new SeqPattern(new RomanSeqStyle, "{1}")
+      put("seqPattern", seqPattern)
+      val docs = entityDao.search(builder)
+      val sections = Collections.newMap[Long, String]
+      docs foreach { doc =>
+        doc.sections foreach { s =>
+          var content = s.contents
+          content = Strings.replace(content, " ", "&nbsp;");
+          content = Strings.replace(content, "\r", "");
+          content = Strings.replace(content, "\t", "&nbsp;&nbsp;");
+          content = Strings.replace(content, "\n", "<br>&nbsp;&nbsp;");
+          sections.put(s.id, "&nbsp;&nbsp;" + content);
+        }
+        put("sections", sections)
+      }
+      put("doc", docs.headOption)
     forward()
   }
 }

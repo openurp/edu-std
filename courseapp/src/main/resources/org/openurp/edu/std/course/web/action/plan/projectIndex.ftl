@@ -2,8 +2,8 @@
 [@b.head/]
 [@b.messages /]
 <link rel="stylesheet" type="text/css" href="${base}/static/css/plan.css?v=20200810" />
-[#include "planFunctions.ftl" /]
 [#if plan??]
+[#include "planFunctions.ftl" /]
 [#assign maxTerm = plan.terms /]
 [#assign terms = Parameters['terms']?default("")]
 <div>
@@ -18,7 +18,7 @@
         [/#if]
       [/@]
       [#if hasProgramDoc]
-        [@b.tab label="专业培养方案" href="!programDoc"/]
+        [@b.tab label="培养方案" href="!programDoc?program.id="+plan.program.id/]
       [/#if]
       [@b.tab label="替代课程"]
         <div style="text-align:center;font-size:12px;vnd.ms-excel.numberformat:@;width:90%;margin:auto" >
@@ -60,5 +60,7 @@
         [/@]
     [/@]
 </div>
+[#else]
+<div>尚无您的培养计划</div>
 [/#if]
 [@b.foot/]

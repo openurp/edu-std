@@ -4,6 +4,7 @@
   [@b.toolbar title="计划完成情况"]
     bar.addPrint();
   [/@]
+  [#if planAuditResult??]
   <table align="center" class="infoTable">
    <tr>
     <td class="title" width="18%">学号:</td>
@@ -39,5 +40,8 @@
    </tr>
   </table>
   [#include "resultTable.ftl" /]
+  [#else]
+    尚无您的计划完成情况。
+  [/#if]
 </div>
 [@b.foot/]

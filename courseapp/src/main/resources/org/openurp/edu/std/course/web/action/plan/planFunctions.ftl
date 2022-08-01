@@ -87,11 +87,12 @@
 [#macro planMainTitle plan]${plan.program.department.name}&nbsp;${plan.program.major.name}专业[/#macro]
 [#macro planSubTitle plan]${("("+ plan.program.direction.name + ")&nbsp;")!}&nbsp; ${plan.program.level.name}&nbsp;培养方案&nbsp;(${plan.program.grade})[/#macro]
 
-[#macro displayCourse course]
+[#macro displayCourse plan,course]
+  [#assign course_remark][#if plan.program.degreeCourses?seq_contains(course)]<span style="color:red" title="学位课程">*</span>[/#if][/#assign]
   [#if enableLinkCourseInfo]
-   <a href="${ems.base}/edu/course/info/${course.id}" target="_blank">${course.name}</a>
+   <a href="${ems.base}/edu/course/info/${course.id}" target="_blank">${course.name}${course_remark}</a>
   [#else]
-    ${course.name}
+    ${course.name}${course_remark}
   [/#if]
 [/#macro]
 [#-- 获得一个课程组所应该colspan多少 --]
@@ -233,7 +234,7 @@
             [/#if]
 
             <td class="course">&nbsp;${planCourse.course.code!}</td>
-            <td class="course">&nbsp;${courseCount}&nbsp;[@displayCourse planCourse.course/]</td>
+            <td class="course">&nbsp;${courseCount}&nbsp;[@displayCourse courseGroup.plan,planCourse.course/]</td>
             <td class="credit_hour">${(planCourse.course.credits)?default(0)}</td>
             [@courseTermInfoMacro planCourse /]
             <td class="credit_hour">${planCourse.department.name}</td>
@@ -321,7 +322,7 @@ mustSpan:${mustSpan}
 [/#macro]
 
 [#macro planTitle plan]
-<p style="text-align:center;color:#00108c;font-weight:bold;font-size:13pt;margin:0px 5px;">
+<p style="text-align:center;color:#00108c;font-weight:bold;font-size:13pt;margin:0px 5px;font-family:宋体;">
     [#if plan.std??]
     ${plan.std.level.name}&nbsp;${(plan.std.stdType.name)!}&nbsp;${(plan.std.state.department.name)!}&nbsp;${plan.std.state.major.name}<br>${(plan.std.state.direction.name + "&nbsp;")!} ${plan.std.user.name}个人培养计划(${plan.std.state.grade})
     [#else]
