@@ -30,12 +30,12 @@ import org.beangle.webmvc.support.helper.PopulateHelper
 import org.openurp.base.edu.model.*
 import org.openurp.base.edu.service.TimeSettingService
 import org.openurp.base.model.Semester
-import org.openurp.base.service.SemesterService
+import org.openurp.base.service.{ProjectPropertyService, SemesterService}
 import org.openurp.base.std.model.{Squad, Student}
+import org.openurp.edu.Features
 import org.openurp.edu.clazz.config.ScheduleSetting
 import org.openurp.edu.clazz.domain.{ClazzProvider, WeekTimeBuilder}
 import org.openurp.edu.clazz.model.CourseTaker
-import org.openurp.edu.std.app.model.Features
 import org.openurp.edu.std.course.web.helper.{CourseTable, CourseTableSetting}
 import org.openurp.edu.std.course.web.support.StdProjectSupport
 
@@ -49,6 +49,8 @@ class CoursetableAction extends StdProjectSupport {
   var entityDao: EntityDao = _
 
   var clazzProvider: ClazzProvider = _
+
+  var projectPropertyService: ProjectPropertyService = _
 
   var semesterService: SemesterService = _
 
@@ -77,7 +79,7 @@ class CoursetableAction extends StdProjectSupport {
     put("table", courseTable)
     put("setting", setting)
     put("ems", Ems)
-    put("enableLinkCourseInfo", Features.EnableLinkCourseInfo)
+    put("enableLinkCourseInfo", projectPropertyService.get(project, Features.ProgramLinkCourseEnabled, false))
     forward("projectIndex")
   }
 

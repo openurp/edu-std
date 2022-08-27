@@ -17,7 +17,7 @@
     </select>
     |
 [/@]
- [#macro getTeacherNames(beanList)][#list beanList as bean][#if bean_index>0],[/#if]${(bean.user.name)!}[/#list][/#macro]
+ [#macro getTeacherNames(beanList)][#list beanList as bean][#if bean_index>0],[/#if]${(bean.name)!}[/#list][/#macro]
  [#macro getListName(beanList)][#list beanList as bean][#if bean_index>0],[/#if]${(bean.name)!}[/#list][/#macro]
  [#include "courseTableStyle.ftl"/]
  [@initCourseTable table,1/]

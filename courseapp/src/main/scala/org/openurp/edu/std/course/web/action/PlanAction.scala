@@ -26,12 +26,13 @@ import org.beangle.web.action.context.ActionContext
 import org.beangle.web.action.support.ActionSupport
 import org.beangle.web.action.view.View
 import org.openurp.base.model.{AuditStatus, Project}
+import org.openurp.base.service.ProjectPropertyService
 import org.openurp.base.std.model.Student
 import org.openurp.code.edu.model.TeachingNature
 import org.openurp.code.service.CodeService
+import org.openurp.edu.Features
 import org.openurp.edu.program.domain.{AlternativeCourseProvider, CoursePlanProvider}
 import org.openurp.edu.program.model.{ExecutionPlan, Program, ProgramDoc}
-import org.openurp.edu.std.app.model.Features
 import org.openurp.edu.std.course.web.support.StdProjectSupport
 
 class PlanAction extends StdProjectSupport {
@@ -44,8 +45,11 @@ class PlanAction extends StdProjectSupport {
 
   var codeService: CodeService = _
 
+  var projectPropertyService: ProjectPropertyService = _
+
   override def projectIndex(): View = {
     val std = getCurrentStudent()
+    val project = std.project
     coursePlanProvider.getCoursePlan(std) foreach { plan =>
       val majorAlternativeCourses = alternativeCourseProvider.getMajorAlternatives(std)
       val stdAlternativeCourses = alternativeCourseProvider.getStdAlternatives(std)
@@ -63,7 +67,7 @@ class PlanAction extends StdProjectSupport {
       }
     }
     put("ems", Ems)
-    put("enableLinkCourseInfo", Features.EnableLinkCourseInfo)
+    put("enableLinkCourseInfo", projectPropertyService.get(project, Features.ProgramLinkCourseEnabled, false))
     forward("projectIndex")
   }
 

@@ -161,7 +161,7 @@ class AlternativeAction extends EntityAction[AlternativeApply] with StdProjectSu
     val apply = entityDao.get(classOf[AlternativeApply], id)
     if (apply.approved.contains(true)) return redirect("index", "不能删除已经审核通过的申请")
     val me = Securities.user
-    if (!(apply.std.user.code == me)) return redirect("index", "不能删除别人的申请")
+    if (!(apply.std.code == me)) return redirect("index", "不能删除别人的申请")
     entityDao.remove(apply)
     redirect("index", "成功删除申请")
   }

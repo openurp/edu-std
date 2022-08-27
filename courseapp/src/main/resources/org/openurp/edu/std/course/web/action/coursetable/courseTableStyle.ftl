@@ -8,7 +8,7 @@
     <table width="100%" align="center" class="gridtable"  style="text-align:center">
       <thead>
         <tr>
-          <th style="background-color:#DEEDF7;" height="10px" width="80px">节次/星期</th>
+          <th style="background-color:#DEEDF7;" height="10px" width="110px">节次/星期</th>
           [#list table.weekdays as wd]
           <th style="background-color:#DEEDF7;"><font size="2px">${weekNames[wd.id]}</font></th>
           [/#list]
@@ -16,7 +16,7 @@
       </thead>
       [#list table.timeSetting.units?sort_by("indexno") as unit]
       <tr>
-        <td style="background-color:${unit.part.color}">${unit.name}<br>${unit.beginAt}-${unit.endAt}</td>
+        <td style="background-color:${unit.part.color};" title="${unit.beginAt}-${unit.endAt}">${unit.name}<span style="font-size:0.6rem;color: #999;">${unit.beginAt}-${unit.endAt}</span></td>
         [#list table.weekdays as wd]
         <td id="TD${unit_index+(wd.id-1)*table.timeSetting.units?size}_${tableIndex}"  style="backGround-Color:#ffffff;font-size:${fontSize?default(12)}px"></td>
         [/#list]
@@ -37,7 +37,7 @@
          </tr>
          <tr style="background-color: #DEEDF7;">
           [#list table.timeSetting.units?sort_by("indexno") as unit]
-          <th >${unit.name}</th>
+          <th>${unit.name}</th>
           [/#list]
          </tr>
         </thead>

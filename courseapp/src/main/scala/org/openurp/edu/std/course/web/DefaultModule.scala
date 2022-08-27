@@ -32,6 +32,7 @@ class DefaultModule extends BindModule {
     bind(classOf[PlanAction])
     bind(classOf[AlternativeAction])
     bind(classOf[CourseTypeAction])
+    bind(classOf[ChooseAction])
 
     bind(classOf[GradeAction])
     bind(classOf[CoursetableAction])

@@ -51,7 +51,7 @@ trait StdProjectSupport extends ActionSupport with ServletSupport {
   }
 
   protected final def getStudents(): Seq[Student] = {
-    entityDao.findBy(classOf[Student], "user.code" -> Securities.user)
+    entityDao.findBy(classOf[Student], "code" -> Securities.user)
   }
 
   protected final def getSemester(semesterService: SemesterService): Semester = {
@@ -76,7 +76,7 @@ trait StdProjectSupport extends ActionSupport with ServletSupport {
     if (null != std) std.asInstanceOf[Student]
     else
       val project = getCurrentProject()
-      val stds = entityDao.findBy(classOf[Student], "project" -> project, "user.code" -> Securities.user)
+      val stds = entityDao.findBy(classOf[Student], "project" -> project, "code" -> Securities.user)
       stds.head
   }
 

@@ -24,6 +24,7 @@ import org.beangle.web.action.view.View
 import org.beangle.webmvc.support.action.EntityAction
 import org.openurp.base.edu.code.CourseType
 import org.openurp.base.edu.model.Course
+import org.openurp.base.std.model.Student
 import org.openurp.edu.grade.model.CourseGrade
 import org.openurp.edu.program.domain.CoursePlanProvider
 import org.openurp.edu.program.model.{CourseGroup, CoursePlan}
@@ -61,7 +62,7 @@ class CourseTypeAction extends EntityAction[CourseTypeChangeApply] with StdProje
       val courseInGradeAndPlan = Collections.intersection(courseGrades.keySet, courseInPlan)
       courseInGradeAndPlan foreach { c => courseGrades.remove(c) }
       put("grades", courseGrades)
-      put("courseTypes", collectCourseType(plan))
+      put("courseTypes", collectCourseType(me, plan))
     }
     forward()
   }
@@ -82,19 +83,19 @@ class CourseTypeAction extends EntityAction[CourseTypeChangeApply] with StdProje
     val apply = entityDao.get(classOf[CourseTypeChangeApply], id)
     if apply.approved.contains(true) then
       return redirect("index", "不能删除已经审核通过的申请")
-    if !(apply.std.user.code == Securities.user) then
+    if !(apply.std.code == Securities.user) then
       return redirect("index", "不能删除别人的申请")
     entityDao.remove(apply)
     redirect("index", "成功删除申请")
   }
 
-  private def collectCourseType(plan: CoursePlan): collection.Set[CourseType] = {
+  private def collectCourseType(std: Student, plan: CoursePlan): collection.Set[CourseType] = {
     val types = Collections.newSet[CourseType]
     for (g <- plan.groups; if g.children.isEmpty) { //without subgroup
       if g.planCourses.isEmpty then // 1. without courses
         types.add(g.courseType)
       else if !g.autoAddup && g.courseType.optional then // 2. with some courses
-        val sum = g.planCourses.map(_.course.credits).sum
+        val sum = g.planCourses.map(_.course.getCredits(std.level)).sum
         if sum < g.credits then types.add(g.courseType)
     }
     types

@@ -15,10 +15,21 @@
  * along with this program.  If not, see <http://www.gnu.org/licenses/>.
  */
 
-package org.openurp.edu.std.app.model
+package org.openurp.edu.std.course.web.action
 
-import org.beangle.ems.app.EmsApp
+import org.beangle.data.dao.EntityDao
+import org.beangle.ems.app.Ems
+import org.beangle.web.action.view.View
+import org.openurp.edu.std.course.web.support.StdProjectSupport
 
-object Features {
-  val EnableLinkCourseInfo: Boolean = EmsApp.properties.getOrElse("enableLinkCourseInfo", "false") == "true"
+/**
+ * 选课
+ */
+class ChooseAction extends StdProjectSupport {
+
+  var entityDao: EntityDao = _
+
+  override def projectIndex(): View = {
+    redirect(to(Ems.webapp + "/edu/clazz/student/stdElectCourse.action"),"")
+  }
 }
