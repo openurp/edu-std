@@ -57,8 +57,8 @@ class CoursetableAction extends StdProjectSupport {
   var timeSettingService: TimeSettingService = _
 
   override def projectIndex(): View = {
-    val project = getCurrentProject()
-    val std = getCurrentStudent()
+    val project = getProject()
+    val std = getStudent()
     val semester = getSemester(semesterService)
     val timeSetting = timeSettingService.get(std.project, semester, Some(std.state.get.campus))
     put("std", std)
@@ -88,12 +88,12 @@ class CoursetableAction extends StdProjectSupport {
     table.timeSetting = ts
     val clazzes = resource match {
       case std: Student =>
-        val takers = clazzProvider.getStdClazzes(setting.semester, std)
+        val takers = clazzProvider.getClazzes(setting.semester, std)
         val takerMap = takers.map(x => (x.clazz, x)).toMap
         put("takerMap", takerMap)
         takers.map(_.clazz)
       case squad: Squad =>
-        clazzProvider.getSquadClazzes(setting.semester, squad)
+        clazzProvider.getClazzes(setting.semester, squad)
     }
     if ss.timePublished then table.setClazzes(clazzes, setting.weektimes)
     else table.setClazzes(clazzes)

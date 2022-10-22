@@ -39,13 +39,13 @@ class CourseTypeAction extends EntityAction[CourseTypeChangeApply] with StdProje
   var coursePlanProvider: CoursePlanProvider = _
 
   override def projectIndex(): View = {
-    val me = getCurrentStudent()
+    val me = getStudent()
     put("applies", entityDao.findBy(classOf[CourseTypeChangeApply], "std", me))
     forward("projectIndex")
   }
 
   def applyForm(): View = {
-    val me = getCurrentStudent()
+    val me = getStudent()
     put("std", me)
     this.coursePlanProvider.getCoursePlan(me) foreach { plan =>
       //登记成绩中出现课程
@@ -69,7 +69,7 @@ class CourseTypeAction extends EntityAction[CourseTypeChangeApply] with StdProje
 
   def doApply(): View = {
     val apply = populateEntity(classOf[CourseTypeChangeApply], "apply")
-    apply.std = getCurrentStudent()
+    apply.std = getStudent()
     apply.updatedAt = Instant.now
     if apply.approved.contains(true) then
       redirect("index", "不能修改已经通过的申请")

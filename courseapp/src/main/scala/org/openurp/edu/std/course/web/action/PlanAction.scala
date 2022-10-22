@@ -48,7 +48,7 @@ class PlanAction extends StdProjectSupport {
   var projectPropertyService: ProjectPropertyService = _
 
   override def projectIndex(): View = {
-    val std = getCurrentStudent()
+    val std = getStudent()
     val project = std.project
     coursePlanProvider.getCoursePlan(std) foreach { plan =>
       val majorAlternativeCourses = alternativeCourseProvider.getMajorAlternatives(std)

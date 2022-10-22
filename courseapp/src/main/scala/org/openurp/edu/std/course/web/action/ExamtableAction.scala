@@ -38,10 +38,10 @@ class ExamtableAction extends StdProjectSupport {
   var semesterService: SemesterService = _
 
   override def projectIndex(): View = {
-    val project = getCurrentProject()
-    val std = getCurrentStudent()
+    val project = getProject()
+    val std = getStudent()
     val semester = getSemester(semesterService)
-    val courseTakers = clazzProvider.getStdClazzes(semester, std)
+    val courseTakers = clazzProvider.getClazzes(semester, std)
 
     val finalTakers = Collections.newMap[CourseTaker, ExamTaker]
     val otherTakers = Collections.newMap[CourseTaker, ExamTaker]

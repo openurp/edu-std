@@ -33,7 +33,7 @@
     [/@]
     [@b.col width="7%" title="修读类别" ]${takerMap.get(clazz).takeType.name} [#if takerMap.get(clazz).freeListening]<sup>免听</sup>[/#if][#t/][/@]
     [@b.col width="7%" property="remark" title="备注"]
-        ${clazz.remark!} ${clazz.id}
+        ${clazz.remark!}
       [#list clazz.schedule.sessions as s]${(s.places)!}[#sep]&nbsp;[/#list]
     [/@]
   [/@]

@@ -48,7 +48,7 @@ class AlternativeAction extends EntityAction[AlternativeApply] with StdProjectSu
   var codeService: CodeService = _
 
   override def projectIndex(): View = {
-    val me = getCurrentStudent()
+    val me = getStudent()
     val builder = OqlBuilder.from(classOf[AlternativeApply], "apply")
       .where("apply.std=:std", me)
     put("applies", entityDao.search(builder))
@@ -56,7 +56,7 @@ class AlternativeAction extends EntityAction[AlternativeApply] with StdProjectSu
   }
 
   def applyForm(): View = {
-    val std = getCurrentStudent()
+    val std = getStudent()
     put("std", std)
     put("planCourses", planCourses(std))
     put("gradeCourses", gradeCourses(std))
@@ -87,9 +87,9 @@ class AlternativeAction extends EntityAction[AlternativeApply] with StdProjectSu
 
   def doApply(): View = {
     val apply = populateEntity(classOf[AlternativeApply], "apply")
-    apply.std = getCurrentStudent()
+    apply.std = getStudent()
 
-    val project = getCurrentProject()
+    val project = getProject()
     val originIdStr = get("originIds", "") // 原课程代码串
     val substituteIdStr = get("substituteIds", "") // 替换课程代码串
     fillCourse(project, apply.olds, originIdStr)

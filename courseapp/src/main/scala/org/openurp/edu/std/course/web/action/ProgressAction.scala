@@ -29,7 +29,7 @@ class ProgressAction extends StdProjectSupport {
   var entityDao: EntityDao = _
 
   override def projectIndex(): View = {
-    val std = getCurrentStudent()
+    val std = getStudent()
     val query = OqlBuilder.from(classOf[PlanAuditResult], "r")
     query.where("r.std = :std", std)
     val result = entityDao.search(query).headOption

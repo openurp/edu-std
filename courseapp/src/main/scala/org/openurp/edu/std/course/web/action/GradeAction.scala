@@ -37,7 +37,7 @@ class GradeAction extends StdProjectSupport {
   var codeService: CodeService = _
 
   override def projectIndex(): View = {
-    val std = getCurrentStudent()
+    val std = getStudent()
     val grades = courseGradeProvider.getPublished(std)
     put("stdGpa", entityDao.findBy(classOf[StdGpa], "std", std).headOption)
     val gradeTypes = codeService.get(classOf[GradeType], GradeType.Usual, GradeType.Middle, GradeType.End, GradeType.Makeup, GradeType.Delay, GradeType.EndGa)
